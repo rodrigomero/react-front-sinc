@@ -1,19 +1,21 @@
 "use client";
 
-import { redirect } from "next/dist/server/api-utils";
+import { redirect } from "next/navigation";
 import { useState } from "react";
-const apiBaseUrl = "http://localhost:8080"
+import { useRouter } from "next/navigation";
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
-    let data = await fetch(apiBaseUrl + "/users/login", {
+    let data = await fetch(`${baseUrl}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,14 +26,19 @@ export default function LoginPage() {
     let login = await data.json();
 
     if (login) {
-      redirect("/dashboard");
       alert("Login bem-sucedido!");
+      localStorage.setItem("userId", login.id);
+      localStorage.setItem("isAdmin", login.isAdmin ? "true" : "false");
+      router.push('/products');
     } else {
       setError("Credenciais inválidas. Tente novamente.");
     }
   };
 
   return (
+    <main>
+
+    
     <div className="login-container">
       <form onSubmit={handleLogin} className="login-form">
         <h1 className="login-title">Login</h1>
@@ -69,5 +76,6 @@ export default function LoginPage() {
         </button>
       </form>
     </div>
+    </main>
   );
 }
