@@ -1,0 +1,64 @@
+/* styles/listagem.css */
+
+.listagem-container {
+    align-content: center;
+}
+
+/* Estilo geral da tabela */
+.listagem-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    background-color: #f8f9fa;
+    color: #333;
+    table-layout: auto; /* Permite que as colunas se adaptem ao conteúdo */
+  }
+  
+  /* Cabeçalhos */
+  .listagem-tabela th {
+    background-color: #4a5568; /* Cinza escuro */
+    color: #ffffff;
+    padding: 12px;
+    white-space: nowrap; /* Impede quebra de texto no cabeçalho */
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  /* Células */
+  .listagem-tabela td {
+    padding: 10px;
+    border: 1px solid #e2e8f0; /* Cinza claro */
+    word-wrap: break-word; /* Permite quebra de texto em palavras longas */
+    white-space: nowrap; /* Mantém o texto em linha única, se possível */
+    text-align: center;
+  }
+  
+  /* Alternância de cores nas linhas */
+  .listagem-tabela tr:nth-child(even) {
+    background-color: #f1f5f9; /* Azul claro muito sutil */
+  }
+  
+  .listagem-tabela tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+  
+  /* Hover nas linhas */
+  .listagem-tabela tr:hover {
+    background-color: #e2e8f0; /* Cinza claro ao passar o mouse */
+    cursor: pointer;
+  }
+  
+  /* Texto responsivo */
+  @media (max-width: 768px) {
+    .listagem-tabela {
+      font-size: 14px; /* Reduz tamanho da fonte em telas menores */
+    }
+  
+    .listagem-tabela th,
+    .listagem-tabela td {
+      padding: 8px;
+    }
+  }
+  
