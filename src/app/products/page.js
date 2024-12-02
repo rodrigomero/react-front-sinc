@@ -9,7 +9,9 @@ const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 const ProductsPage = () => {
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null); 
+  const [refreshTable, setRefreshTable] = useState(0); 
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -26,7 +28,7 @@ const ProductsPage = () => {
       .then((response) => response.json())
       .then((dados) => setData(dados))
       .catch((error) => console.error('Erro ao buscar dados:', error));
-  }, []);
+  }, [refreshTable]);
 
   const openModal = (product) => {
     
@@ -41,7 +43,28 @@ const ProductsPage = () => {
     setIsModalOpen(true);
   };
 
+  const openNewModal = (product) => {
+    setIsNewModalOpen(true);
+    setFormData((prevData) => ({
+      ...prevData,
+      ["category"]: 0,
+    }));
+
+  };
+
   
+  const closeNewModal = () => {
+    setIsNewModalOpen(false);
+    
+    setFormData({
+      name: '',
+      description: '',
+      category: '',
+      price: '',
+      stock: '',
+    });
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedProduct(null);
@@ -86,6 +109,27 @@ const ProductsPage = () => {
       })
       .catch((error) => console.error('Erro ao atualizar o produto:', error));
   };
+  const handleNewSubmit = (e) => {
+    e.preventDefault();
+    formData.category = parseInt(formData.category);
+    fetch(`${baseUrl}/products/save`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+       
+        setData((prevData) =>
+          prevData.map((item) => (item.id === data.id ? data : item))
+        );
+        closeNewModal();
+        setRefreshTable(refreshTable+1);
+      })
+      .catch((error) => console.error('Erro ao atualizar o produto:', error));
+  };
 
   return (
     <main className="listagem-container grid justify-items-center min-h-screen">
@@ -125,9 +169,9 @@ const ProductsPage = () => {
               <div>
                 <label htmlFor="category">Categoria</label>
                 <select name="category" id="category" value={valueToSelect(formData.category)} onChange={handleChange} required>
-                  <option value={1} >Instrumento</option>
-                  <option value={2}>Acessorio</option>
-                  <option value={3}>Amplificador</option>                                
+                  <option value={0} >Instrumento</option>
+                  <option value={1}>Acessorio</option>
+                  <option value={2}>Amplificador</option>                                
                 </select>
               </div>
               <div className='flex'>
@@ -167,6 +211,73 @@ const ProductsPage = () => {
         </div>
       )}
 
+        {isNewModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Editar Produto</h2>
+            <form onSubmit={handleNewSubmit}>
+              <div>
+                <label htmlFor="name">Nome</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="description">Descrição</label>
+                <input
+                  type="text"
+                  id="description"
+                  name="description"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="category">Categoria</label>
+                <select name="category" id="category" onChange={handleChange} required>
+                  <option default value={0} >Instrumento</option>
+                  <option value={1}>Acessorio</option>
+                  <option value={2}>Amplificador</option>                                
+                </select>
+              </div>
+              <div className='flex'>
+
+              
+              <div>
+                <label htmlFor="price">Preço</label>
+                <input
+                  type="number"
+                  id="price"
+                  name="price"     
+                  onChange={handleChange}        
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="stock">Estoque</label>
+                <input
+                  type="number"
+                  id="stock"
+                  name="stock"   
+                  onChange={handleChange}         
+                  required
+                />
+              </div>
+              </div>
+              <div className='modal-btns'>
+                <button type="submit" className="btn-salvar">Salvar</button>
+                <button type="button" onClick={closeNewModal} className="btn-fechar-modal">
+                  Fechar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
         {data.length > 0 ? (
           <table className="listagem-tabela">
@@ -203,7 +314,7 @@ const ProductsPage = () => {
         )}
       
       <button 
-            onClick={openModal} 
+            onClick={openNewModal} 
             className="btn-abrir-modal justify-self-end"
             >
             Adicionar Produto
