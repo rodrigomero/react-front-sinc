@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import { FaCheckCircle } from "react-icons/fa";
+
 import '../styles/listagem.css'; 
 
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -26,7 +28,7 @@ const UsersPage = () => {
                 <th>ID</th>
                 <th>Username</th>
                 <th>Email</th>
-                <th>Administrador</th>
+                <th>Adm</th>
               </tr>
             </thead>
             <tbody>
@@ -35,7 +37,7 @@ const UsersPage = () => {
                   <td>{item.id}</td>
                   <td>{item.username}</td>
                   <td>{item.email}</td>
-                  <td>{item.isAdmin ? "Sim" : ""}</td>
+                  <td className='td-icon'><div>{item.isAdmin ? <FaCheckCircle/> : null}</div></td>
                 </tr>
               ))}
             </tbody>
