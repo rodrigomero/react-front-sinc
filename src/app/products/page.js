@@ -3,6 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/listagem.css'; 
 import { useRouter } from 'next/navigation';
+import DataTable from 'datatables.net-react';
+import DT from 'datatables.net-dt';
+import { MdEdit } from 'react-icons/md';
+ 
+DataTable.use(DT);
+
 
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -26,12 +32,11 @@ const ProductsPage = () => {
 
     fetch(`${baseUrl}/products`)
       .then((response) => response.json())
-      .then((dados) => setData(dados))
+      .then((dados) => {setData(dados)})
       .catch((error) => console.error('Erro ao buscar dados:', error));
   }, [refreshTable]);
 
   const openModal = (product) => {
-    
     setSelectedProduct(product);
     setFormData({
       name: product.name,
@@ -131,6 +136,26 @@ const ProductsPage = () => {
       .catch((error) => console.error('Erro ao atualizar o produto:', error));
   };
 
+  let columns = [
+    { data: 'id'},
+    { data: 'name' },
+    { data: 'description' },
+    { data: 'price' },
+    { data: 'category' },
+    { data: 'stock' },
+    { data: 'isVisible' },
+    { className: 'edit-cell'}
+  ];
+
+  let slots = {
+      7: (data, row) => 
+        (
+        <MdEdit onClick={() => openModal(row)}/>
+      )
+    };
+
+ 
+
   return (
     <main className="listagem-container grid justify-items-center min-h-screen">
       <div className='grid justify-items-center'>
@@ -145,7 +170,7 @@ const ProductsPage = () => {
             <h2>Editar Produto</h2>
             <form onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="name">Nome</label>
+                <label htmlFor="name">Nome:</label>
                 <input
                   type="text"
                   id="name"
@@ -156,7 +181,7 @@ const ProductsPage = () => {
                 />
               </div>
               <div>
-                <label htmlFor="description">Descrição</label>
+                <label htmlFor="description">Descrição:</label>
                 <input
                   type="text"
                   id="description"
@@ -167,18 +192,18 @@ const ProductsPage = () => {
                 />
               </div>
               <div>
-                <label htmlFor="category">Categoria</label>
+                <label htmlFor="category">Categoria:</label>
                 <select name="category" id="category" value={valueToSelect(formData.category)} onChange={handleChange} required>
                   <option value={0} >Instrumento</option>
                   <option value={1}>Acessorio</option>
                   <option value={2}>Amplificador</option>                                
                 </select>
               </div>
-              <div className='flex'>
+              <div className='flex price-stock'>
 
               
               <div>
-                <label htmlFor="price">Preço</label>
+                <label htmlFor="price">Preço:</label>
                 <input
                   type="number"
                   id="price"
@@ -189,7 +214,7 @@ const ProductsPage = () => {
                 />
               </div>
               <div>
-                <label htmlFor="stock">Estoque</label>
+                <label htmlFor="stock">Estoque:</label>
                 <input
                   type="number"
                   id="stock"
@@ -201,10 +226,10 @@ const ProductsPage = () => {
               </div>
               </div>
               <div className='modal-btns'>
-                <button type="submit" className="btn-salvar">Salvar</button>
                 <button type="button" onClick={closeModal} className="btn-fechar-modal">
                   Fechar
                 </button>
+                <button type="submit" className="btn-salvar">Salvar</button>
               </div>
             </form>
           </div>
@@ -214,10 +239,10 @@ const ProductsPage = () => {
         {isNewModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>Editar Produto</h2>
+            <h2>Adicionar Produto</h2>
             <form onSubmit={handleNewSubmit}>
               <div>
-                <label htmlFor="name">Nome</label>
+                <label htmlFor="name">Nome:</label>
                 <input
                   type="text"
                   id="name"
@@ -227,7 +252,7 @@ const ProductsPage = () => {
                 />
               </div>
               <div>
-                <label htmlFor="description">Descrição</label>
+                <label htmlFor="description">Descrição:</label>
                 <input
                   type="text"
                   id="description"
@@ -237,18 +262,19 @@ const ProductsPage = () => {
                 />
               </div>
               <div>
-                <label htmlFor="category">Categoria</label>
+                <label htmlFor="category">Categoria:</label>
                 <select name="category" id="category" onChange={handleChange} required>
-                  <option default value={0} >Instrumento</option>
+                  <option value="" disabled selected hidden>Escolha uma categoria</option>
+                  <option value={0} >Instrumento</option>
                   <option value={1}>Acessorio</option>
                   <option value={2}>Amplificador</option>                                
                 </select>
               </div>
-              <div className='flex'>
+              <div className='flex price-stock'>
 
               
               <div>
-                <label htmlFor="price">Preço</label>
+                <label htmlFor="price">Preço:</label>
                 <input
                   type="number"
                   id="price"
@@ -258,7 +284,7 @@ const ProductsPage = () => {
                 />
               </div>
               <div>
-                <label htmlFor="stock">Estoque</label>
+                <label htmlFor="stock">Estoque:</label>
                 <input
                   type="number"
                   id="stock"
@@ -269,10 +295,10 @@ const ProductsPage = () => {
               </div>
               </div>
               <div className='modal-btns'>
-                <button type="submit" className="btn-salvar">Salvar</button>
                 <button type="button" onClick={closeNewModal} className="btn-fechar-modal">
-                  Fechar
+                  Voltar
                 </button>
+                <button type="submit" className="btn-salvar">Salvar</button>
               </div>
             </form>
           </div>
@@ -280,7 +306,7 @@ const ProductsPage = () => {
       )}
 
         {data.length > 0 ? (
-          <table className="listagem-tabela">
+          <DataTable id="my-products" className="listagem-tabela display" columns={columns} data={data} slots={slots} >
             <thead>
               <tr>
                 <th>ID</th>
@@ -289,26 +315,11 @@ const ProductsPage = () => {
                 <th>Categoria</th>
                 <th>Preço</th>
                 <th>Estoque</th>
-                <th></th>
+                <th>Visivel</th>
+                <th>Editar</th>
               </tr>
             </thead>
-            <tbody>
-              {data.map((item) => item.isVisible ? (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.description}</td>
-                  <td>{item.category}</td>
-                  <td>{`R$ ${item.price.toFixed(2)}`}</td>
-                  <td>{item.stock}</td>
-                  <td><button onClick={() => openModal(item)} className="btn-editar">
-                      Editar
-                    </button>
-                  </td>
-                </tr>
-              ) : null)}
-            </tbody>
-          </table>
+          </DataTable>
         ) : (
           <p className="listagem-carregando">Carregando dados...</p>
         )}
