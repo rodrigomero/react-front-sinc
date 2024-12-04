@@ -1,14 +1,13 @@
 "use client";
 
-import { redirect } from "next/navigation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import '../styles/login.css'; 
-
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export default function LoginPage() {
+export default function Register() {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
@@ -17,21 +16,19 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
-    let data = await fetch(`${baseUrl}/users/login`, {
+    let data = await fetch(`${baseUrl}/users/save`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body:
-        JSON.stringify({ username: username, password: password })
+        JSON.stringify({ username: username, email:email, password: password, isAdmin: false })
     });
-    let login = await data.json();
+    let login =  data.ok;
 
     if (login) {
-      alert("Login bem-sucedido!");
-      localStorage.setItem("userId", login.id);
-      localStorage.setItem("isAdmin", login.isAdmin ? "true" : "false");
-      router.push('/products');
+      alert("Registro bem-sucedido!");
+      router.push('/login');
     } else {
       setError("Credenciais inválidas. Tente novamente.");
     }
@@ -43,43 +40,48 @@ export default function LoginPage() {
     
     <div className="login-container">
       <form onSubmit={handleLogin} className="login-form">
-        <h1 className="login-title">Login</h1>
+        <h1 className="login-title">Cadastre-se</h1>
 
-        <label htmlFor="username" className="login-label">
-          username:
-        </label>
+        
         <input
           type="username"
           id="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Digite seu username"
+          placeholder="Username"
+          className="login-input"
+          required
+        />
+       
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
           className="login-input"
           required
         />
 
-        <label htmlFor="password" className="login-label">
-          Senha:
-        </label>
+  
         <input
           type="password"
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Digite sua senha"
+          placeholder="Senha"
           className="login-input"
           required
         />
 
         {error && <p className="login-error">{error}</p>}
-
         <div className="container-btn-login">
-          <button type="button" className="back-button" onClick={(e) => {router.push("/register")}}>
-            Cadastre-se
+          <button type="button" className="back-button" onClick={(e) => {router.push("/")}}>
+            Voltar
           </button>
 
           <button type="submit" className="login-button">
-            Entrar
+            Criar
           </button>
         </div>
       </form>
