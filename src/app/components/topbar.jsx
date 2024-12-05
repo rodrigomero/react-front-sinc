@@ -9,10 +9,13 @@ import "../styles/topbar.css";
 export default function Topbar() {
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const isLogin = usePathname() === "/login" || usePathname() === "/register" || usePathname() === "/";
-  const isProduct = usePathname() === "/products" ? "active" : ""
-  const isUsers = usePathname() === "/users" ? "active" : ""
-  const isOrders = usePathname() === "/orders" ? "active" : ""
+  let path = usePathname();
+
+  const isLogin = path === "/login" || path === "/register" || path === "/";
+
+  const isProduct = path === "/products" ? "active" : "";
+  const isUsers = path === "/users" ? "active" : "";
+  const isOrders = path === "/orders" ? "active" : "";
 
   useEffect(() => {
     const isAdminValue = localStorage.getItem("isAdmin");
@@ -25,28 +28,32 @@ export default function Topbar() {
 
   return !isLogin ? (
     <nav className="topnav">
-      
-        <ul>
-          <li>
-            <Link href="/products" className={isProduct}>Produtos</Link>
-          </li>
+      <ul>
+        <li>
+          <Link href="/products" className={isProduct}>
+            Produtos
+          </Link>
+        </li>
 
-          {isAdmin && (
-            <>
-              <li>
-                <Link href="/users" className={isUsers}>Usuários</Link>
-              </li>
-              <li>
-                <Link href="/orders" className={isOrders}>Pedidos</Link>
-              </li>
-            </>
-          )}
+        {isAdmin && (
+          <>
+            <li>
+              <Link href="/users" className={isUsers}>
+                Usuários
+              </Link>
+            </li>
+            <li>
+              <Link href="/orders" className={isOrders}>
+                Pedidos
+              </Link>
+            </li>
+          </>
+        )}
 
-          <li>
-            <Link href="/login">Logout</Link>
-          </li>
-        </ul>
-      
+        <li>
+          <Link href="/login">Logout</Link>
+        </li>
+      </ul>
     </nav>
   ) : null;
 }
