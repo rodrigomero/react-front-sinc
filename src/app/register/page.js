@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import '../styles/login.css'; 
+import { useState } from "react";
+import "../styles/login.css";
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function Register() {
@@ -21,14 +21,18 @@ export default function Register() {
       headers: {
         "Content-Type": "application/json",
       },
-      body:
-        JSON.stringify({ username: username, email:email, password: password, isAdmin: false })
+      body: JSON.stringify({
+        username: username,
+        email: email,
+        password: password,
+        isAdmin: false,
+      }),
     });
-    let login =  data.ok;
+    let login = data.ok;
 
     if (login) {
       alert("Registro bem-sucedido!");
-      router.push('/login');
+      router.push("/login");
     } else {
       setError("Credenciais inválidas. Tente novamente.");
     }
@@ -36,56 +40,58 @@ export default function Register() {
 
   return (
     <main>
+      <div className="login-container">
+        <form onSubmit={handleLogin} className="login-form">
+          <h1 className="login-title">Cadastre-se</h1>
 
-    
-    <div className="login-container">
-      <form onSubmit={handleLogin} className="login-form">
-        <h1 className="login-title">Cadastre-se</h1>
+          <input
+            type="username"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Username"
+            className="login-input"
+            required
+          />
 
-        
-        <input
-          type="username"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
-          className="login-input"
-          required
-        />
-       
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          className="login-input"
-          required
-        />
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            className="login-input"
+            required
+          />
 
-  
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Senha"
-          className="login-input"
-          required
-        />
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Senha"
+            className="login-input"
+            required
+          />
 
-        {error && <p className="login-error">{error}</p>}
-        <div className="container-btn-login">
-          <button type="button" className="back-button" onClick={(e) => {router.push("/")}}>
-            Voltar
-          </button>
+          {error && <p className="login-error">{error}</p>}
+          <div className="container-btn-login">
+            <button
+              type="button"
+              className="back-button"
+              onClick={() => {
+                router.push("/");
+              }}
+            >
+              Voltar
+            </button>
 
-          <button type="submit" className="login-button">
-            Criar
-          </button>
-        </div>
-      </form>
-    </div>
+            <button type="submit" className="login-button">
+              Criar
+            </button>
+          </div>
+        </form>
+      </div>
     </main>
   );
 }

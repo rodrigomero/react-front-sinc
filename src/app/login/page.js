@@ -1,9 +1,8 @@
 "use client";
 
-import { redirect } from "next/navigation";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import '../styles/login.css'; 
+import { useState } from "react";
+import "../styles/login.css";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -22,8 +21,7 @@ export default function LoginPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body:
-        JSON.stringify({ username: username, password: password })
+      body: JSON.stringify({ username: username, password: password }),
     });
     let login = await data.json();
 
@@ -31,7 +29,7 @@ export default function LoginPage() {
       alert("Login bem-sucedido!");
       localStorage.setItem("userId", login.id);
       localStorage.setItem("isAdmin", login.isAdmin ? "true" : "false");
-      router.push('/products');
+      router.push("/products");
     } else {
       setError("Credenciais inválidas. Tente novamente.");
     }
@@ -39,51 +37,55 @@ export default function LoginPage() {
 
   return (
     <main>
+      <div className="login-container">
+        <form onSubmit={handleLogin} className="login-form">
+          <h1 className="login-title">Login</h1>
 
-    
-    <div className="login-container">
-      <form onSubmit={handleLogin} className="login-form">
-        <h1 className="login-title">Login</h1>
+          <label htmlFor="username" className="login-label">
+            username:
+          </label>
+          <input
+            type="username"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Digite seu username"
+            className="login-input"
+            required
+          />
 
-        <label htmlFor="username" className="login-label">
-          username:
-        </label>
-        <input
-          type="username"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Digite seu username"
-          className="login-input"
-          required
-        />
+          <label htmlFor="password" className="login-label">
+            Senha:
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Digite sua senha"
+            className="login-input"
+            required
+          />
 
-        <label htmlFor="password" className="login-label">
-          Senha:
-        </label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Digite sua senha"
-          className="login-input"
-          required
-        />
+          {error && <p className="login-error">{error}</p>}
 
-        {error && <p className="login-error">{error}</p>}
+          <div className="container-btn-login">
+            <button
+              type="button"
+              className="back-button"
+              onClick={() => {
+                router.push("/register");
+              }}
+            >
+              Cadastre-se
+            </button>
 
-        <div className="container-btn-login">
-          <button type="button" className="back-button" onClick={(e) => {router.push("/register")}}>
-            Cadastre-se
-          </button>
-
-          <button type="submit" className="login-button">
-            Entrar
-          </button>
-        </div>
-      </form>
-    </div>
+            <button type="submit" className="login-button">
+              Entrar
+            </button>
+          </div>
+        </form>
+      </div>
     </main>
   );
 }
