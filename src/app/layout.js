@@ -1,13 +1,14 @@
-import "./globals.css";
+/* eslint-disable react/prop-types */
+import { Roboto } from "next/font/google";
 import Topbar from "./components/topbar";
-import { Roboto } from 'next/font/google'
+import { EditProvider } from "./context/editContext";
+import "./globals.css";
 
 const roboto = Roboto({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: '400'
-})
- 
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+});
 
 export const metadata = {
   title: "Musistore",
@@ -15,12 +16,13 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-
   return (
     <html lang="en" className={roboto.className}>
       <body>
-        <Topbar />
-        <div className="content">{children}</div> 
+        <EditProvider>
+          <Topbar />
+          <div className="content">{children}</div>
+        </EditProvider>
       </body>
     </html>
   );
