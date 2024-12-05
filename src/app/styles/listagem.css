@@ -1,84 +1,91 @@
 /* styles/listagem.css */
 
 .listagem-container {
-    align-content: center;
+  align-content: center;
 }
 
-thead tr th:first-child { border-top-left-radius: 10px; }
-thead tr th:last-child { border-top-right-radius: 10px; }
+thead tr th:first-child {
+  border-top-left-radius: 10px;
+}
+thead tr th:last-child {
+  border-top-right-radius: 10px;
+}
 
-tbody tr:last-child td:first-child { border-bottom-left-radius: 10px; }
-tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
-tbody tr:last-child { border-style: hidden;}
-thead tr { border-style: hidden;}
-
+tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
+}
+tbody tr:last-child {
+  border-style: hidden;
+}
+thead tr {
+  border-style: hidden;
+}
 
 .listagem-tabela {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 16px;
-    background-color: #4d4d4d;
-    color: #333;
-    table-layout: auto; 
-    border-radius: 8px;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  background-color: #4d4d4d;
+  color: #333;
+  table-layout: auto;
+  border-radius: 8px;
+}
+
+.listagem-tabela th {
+  background-color: #4d4d4d;
+  color: #ffffff;
+  padding: 12px;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 17px;
+  text-align: center;
+}
+
+.listagem-tabela td {
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  word-wrap: break-word;
+  white-space: nowrap;
+  text-align: center;
+  height: 45px;
+}
+
+.td-icon div {
+  display: flex;
+  justify-content: center;
+}
+
+.listagem-tabela tr:nth-child(even) {
+  background-color: #f1f5f9;
+}
+
+.listagem-tabela tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.listagem-tabela tr:hover {
+  background-color: #e2e8f0;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .listagem-tabela {
+    font-size: 14px;
   }
 
-  .listagem-tabela th {
-    background-color: #4d4d4d; 
-    color: #ffffff;
-    padding: 12px;
-    white-space: nowrap; 
-    font-weight: 500;
-    font-size: 17px;
-    text-align: center;
-  }
-  
-
+  .listagem-tabela th,
   .listagem-tabela td {
-    padding: 10px;
-    border: 1px solid #e2e8f0; 
-    word-wrap: break-word; 
-    white-space: nowrap; 
-    text-align: center;
-    height: 45px;
+    padding: 8px;
   }
-
- .td-icon div{
-    display: flex;
-    justify-content: center;
-
-  }
-
-  .listagem-tabela tr:nth-child(even) {
-    background-color: #f1f5f9; 
-  }
-  
-  .listagem-tabela tr:nth-child(odd) {
-    background-color: #ffffff;
-  }
-  
-  .listagem-tabela tr:hover {
-    background-color: #e2e8f0;
-    cursor: pointer;
-  }
-  
-
-  @media (max-width: 768px) {
-    .listagem-tabela {
-      font-size: 14px; 
-    }
-  
-    .listagem-tabela th,
-    .listagem-tabela td {
-      padding: 8px;
-    }
-  }
-  
+}
 
 .btn-abrir-modal {
   padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 5px;
@@ -89,7 +96,6 @@ thead tr { border-style: hidden;}
   background-color: #45a049;
 }
 
-
 /* Estilo para o botão de fechar */
 .btn-fechar-modal {
   margin-top: 0;
@@ -99,7 +105,6 @@ thead tr { border-style: hidden;}
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  
 }
 
 .btn-fechar-modal:hover {
@@ -113,7 +118,6 @@ thead tr { border-style: hidden;}
   border: none;
   border-radius: 5px;
   cursor: pointer;
-
 }
 
 .btn-salvar:hover {
@@ -151,7 +155,7 @@ thead tr { border-style: hidden;}
 
 .modal-content {
   background-color: #252c38;
-  color:#ffffff;
+  color: #ffffff;
   padding: 20px;
   border-radius: 8px;
   width: 400px;
@@ -168,7 +172,7 @@ thead tr { border-style: hidden;}
 /* Estilo para o formulário */
 form div {
   margin-bottom: 15px;
-  padding: 0  8px;
+  padding: 0 8px;
 }
 
 form label {
@@ -177,7 +181,8 @@ form label {
   margin: 0px;
 }
 
-form input, select{
+form input,
+select {
   color: #000000;
   width: 100%;
   background-color: #ffffff;
@@ -189,14 +194,11 @@ form input, select{
   display: flex;
   justify-content: space-around;
   align-items: baseline;
-  
 }
 
 .price-stock {
   padding: 0;
 }
-
-
 
 .dt-layout-row:first-child {
   display: flex;
@@ -214,7 +216,7 @@ form input, select{
   display: flex;
   align-items: baseline;
 }
-.dt-length select{
+.dt-length select {
   width: auto;
   margin-right: 5px;
 }
@@ -237,7 +239,11 @@ form input, select{
 div.container-title {
   justify-self: start;
 }
-div.container-title  h1{
+div.container-title h1 {
   font-size: 2em;
   margin-bottom: 10px;
-} 
+}
+
+.dt-container {
+  min-width: 700px;
+}
