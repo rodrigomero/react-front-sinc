@@ -1,6 +1,5 @@
 "use client";
 
-import EditModal from "../components/editModal";
 import ListingTable from "../components/listingTable";
 import "../styles/login.css";
 
@@ -18,7 +17,6 @@ export default function ListagemUsuario() {
 
   return (
     <main>
-      <EditModal entity="products" />
       <ListingTable
         title="Listagem de Usuarios"
         endpoint={endpoint}

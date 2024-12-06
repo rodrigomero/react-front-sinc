@@ -1,6 +1,5 @@
 "use client";
 
-import EditModal from "../components/editModal";
 import ListingTable from "../components/listingTable";
 import "../styles/login.css";
 import formatDate from "../utils/dataUtil";
@@ -28,7 +27,6 @@ export default function ListagemOrders() {
 
   return (
     <main>
-      <EditModal entity="orders" />
       <ListingTable
         title="Listagem de Pedidos"
         endpoint={endpoint}
